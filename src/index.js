@@ -1,4 +1,5 @@
 const express = require('express');
+const talkersList = require('./talker.json');
 
 const app = express();
 app.use(express.json());
@@ -13,4 +14,8 @@ app.get('/', (_request, response) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker', (_request, response) => {
+  response.status(200).json(talkersList);
 });
