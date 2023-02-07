@@ -16,9 +16,16 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.get('/talker', (_request, response) => {
-  if (!talkersList) {
-    return response.status(200).json([]);
+app.get('talker/:id', (request, response) => {
+  const { id } = request.params;
+  const talkerRequestData = JSON.parse(talkersList)
+    .find((talkerData) => talkerData.id === Number(id));
+  if (!talkerRequestData) {
+    return response.status(404);
   }
-  return response.status(200).json(talkersList);
+  return response.status(HTTP_OK_STATUS).json(talkerRequestData);
+});
+
+app.get('/talker', (_request, response) => {
+  response.status(HTTP_OK_STATUS).json(talkersList);
 });
