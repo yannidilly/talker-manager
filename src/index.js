@@ -17,5 +17,8 @@ app.listen(PORT, () => {
 });
 
 app.get('/talker', (_request, response) => {
-  response.status(200).json(talkersList);
+  if (!talkersList) {
+    return response.status(200).json([]);
+  }
+  return response.status(200).json(talkersList);
 });
