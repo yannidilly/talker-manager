@@ -1,5 +1,5 @@
 const express = require('express');
-const talkersList = require('./talker.json');
+const { readTalkers } = require('./utils/fsUtils');
 
 const app = express();
 app.use(express.json());
@@ -16,16 +16,7 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.get('talker/:id', (request, response) => {
-  const { id } = request.params;
-  const talkerRequestData = JSON.parse(talkersList)
-    .find((talkerData) => talkerData.id === Number(id));
-  if (!talkerRequestData) {
-    return response.status(404);
-  }
-  return response.status(HTTP_OK_STATUS).json(talkerRequestData);
-});
-
-app.get('/talker', (_request, response) => {
-  response.status(HTTP_OK_STATUS).json(talkersList);
+app.get('/talker', async (_request, response) => {
+  const talkersData = await readTalkers();
+  response.status(HTTP_OK_STATUS).json(talkersData);
 });
