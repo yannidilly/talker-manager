@@ -1,5 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
+const emailValidation = require('./middlewares/emailValidation');
+const passwordValidation = require('./middlewares/passwordValidation');
 const { readTalkers } = require('./utils/fsUtils');
 
 const app = express();
@@ -34,8 +36,7 @@ app.get('/talker', async (_request, response) => {
   response.status(HTTP_OK_STATUS).json(talkersData);
 });
 
-app.post('/login', (_request, response) => {
+app.post('/login', emailValidation, passwordValidation, (request, response) => (
   response.status(200).json({
     token: crypto.randomBytes(8).toString('hex'),
-  });
-});
+})));
