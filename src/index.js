@@ -1,6 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
-const { emailValidation, passwordValidation } = require('./middlewares/validation');
+const { emailValidation, passwordValidation } = require('./middlewares/validations');
 const { readTalkers } = require('./utils/fsUtils');
 
 const app = express();
