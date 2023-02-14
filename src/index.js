@@ -1,6 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
-const { readTalkers, addTalker } = require('./utils/fsUtils');
+const { readTalkers, addTalker, editTalker } = require('./utils/fsUtils');
 const {
   emailValidation,
   passwordValidation,
@@ -70,5 +70,6 @@ app.put('/talker/:id',
   rateValidation,
   (req, res) => {
   const { id } = req.params;
-  res.status(201).json(id);
+  editTalker(id, req.body);
+  res.status(201).json(req.body);
 });
