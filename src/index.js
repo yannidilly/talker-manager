@@ -1,7 +1,16 @@
 const express = require('express');
 const crypto = require('crypto');
-const { emailValidation, passwordValidation } = require('./middlewares/validations');
 const { readTalkers } = require('./utils/fsUtils');
+const {
+  emailValidation,
+  passwordValidation,
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+} = require('./middlewares/validations');
 
 const app = express();
 app.use(express.json());
@@ -40,7 +49,12 @@ app.post('/login', emailValidation, passwordValidation, (request, res) => (
     token: crypto.randomBytes(8).toString('hex'),
 })));
 
-app.post('/talker', (request, res) => {
-  // const { name, age, talk: { watchedAt, rate } } = request.body;
+app.post('/talker',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation, (request, res) => {
   res.status(201).json(request.body);
 });
