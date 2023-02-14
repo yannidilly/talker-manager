@@ -68,6 +68,18 @@ const talkValidation = (req, res, next) => {
   next();
 };
 
+const watchedAtValidation = (req, res, next) => {
+  const { watchedAt } = req.body.talk;
+  const dataRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
+  if (!watchedAt) {
+    return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
+  }
+  if (!dataRegex.test(watchedAt)) {
+    return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+  }
+  next();
+};
+
 module.exports = {
   emailValidation,
   passwordValidation,
@@ -75,4 +87,5 @@ module.exports = {
   nameValidation,
   ageValidation,
   talkValidation,
+  watchedAtValidation,
 };
