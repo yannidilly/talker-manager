@@ -1,33 +1,69 @@
-const emailValidation = (request, response, next) => {
-  const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+?$/i;
-  const { email } = request.body;
+const emailValidation = (req, res, next) => {
+  const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+?$/i;
+  const { email } = req.body;
   if (!email) {
-    return response.status(400).json({ message: 'O campo "email" é obrigatório' });
+    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   }
-  if (!regex.test(email)) {
-    return response.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
   next();
 };
 
-const passwordValidation = (request, response, next) => {
-  const { password } = request.body;
+const passwordValidation = (req, res, next) => {
+  const { password } = req.body;
   if (!password) {
-    return response.status(400).json({ message: 'O campo "password" é obrigatório' });
+    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
   }
   if (password.length < 6) {
-    return response.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+    return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
   next();
 };
 
-const tokenValidation = (request, response, next) => {
-  const token = request.header.authorization;
+const tokenValidation = (req, res, next) => {
+  const token = req.header.authorization;
   if (!token) {
-    return response.status(401).json({ message: 'Token não encontrado' });
+    return res.status(401).json({ message: 'Token não encontrado' });
   }
   if ((token.length !== 16) || (typeof token !== 'string')) {
-    return response.status(401).json({ message: 'Token inválido' });
+    return res.status(401).json({ message: 'Token inválido' });
+  }
+  next();
+};
+
+const nameValidation = (req, res, next) => {
+  const { name } = req.body;
+  if (!name) {
+    return res.status(400).json({ message: 'O campo "name" é obrigatório' });
+  }
+  if (name.length < 3) {
+    return res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
+  }
+  next(); 
+};
+
+const ageValidation = (req, res, next) => {
+  const { age } = req.body;
+  if (!age) {
+    return res.status(400).json({ message: 'O campo "age" é obrigatório' });
+  }
+  if (typeof age !== 'number') {
+    return res.status(400).json({ message: 'O campo "age" deve ser do tipo "number"' });
+  }
+  if (!Number.isInteger(age)) {
+    return res.status(400).json({ message: 'O campo "age" deve ser um "number" do tipo inteiro' });
+  }
+  if (age < 18) {
+    return res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
+  }
+  next();
+};
+
+const talkValidation = (req, res, next) => {
+  const { talk } = req.body;
+  if (!talk) {
+    return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
   }
   next();
 };
@@ -36,4 +72,7 @@ module.exports = {
   emailValidation,
   passwordValidation,
   tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
 };
