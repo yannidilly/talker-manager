@@ -70,7 +70,7 @@ app.put('/talker/:id',
   rateValidation,
   async (req, res) => {
   const { id } = req.params;
-    const numberId = Number(id);
+  const numberId = Number(id);
   await editTalker(numberId, req.body);
   res.status(200).json({ id: numberId, ...req.body });
 });
