@@ -1,6 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
-const { readTalkers, addTalker, editTalker } = require('./utils/fsUtils');
+const { readTalkers, addTalker, editTalker, deleteTalker } = require('./utils/fsUtils');
 const {
   emailValidation,
   passwordValidation,
@@ -73,4 +73,11 @@ app.put('/talker/:id',
   const numberId = Number(id);
   await editTalker(numberId, req.body);
   res.status(200).json({ id: numberId, ...req.body });
+});
+
+app.delete('/talker/:id', tokenValidation, async (req, res) => {
+  const { id } = req.params;
+  const numberId = Number(id);
+  await deleteTalker(numberId);
+  res.status(204);
 });
