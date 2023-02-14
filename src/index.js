@@ -27,8 +27,8 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.get('/talker/:id', async (request, res) => {
-  const { id } = request.params;
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
   const talkersData = await readTalkers();
   const talkerRequestData = talkersData.find((talkerData) => talkerData.id === Number(id));
   if (!talkerRequestData) {
@@ -44,7 +44,7 @@ app.get('/talker', async (req, res) => {
   res.status(HTTP_OK_STATUS).json(talkersData);
 });
 
-app.post('/login', emailValidation, passwordValidation, (request, res) => (
+app.post('/login', emailValidation, passwordValidation, (req, res) => (
   res.status(200).json({
     token: crypto.randomBytes(8).toString('hex'),
 })));
@@ -56,7 +56,19 @@ app.post('/talker',
   talkValidation,
   watchedAtValidation,
   rateValidation,
-  async (request, res) => {
-  const talkerAdded = await addTalker(request.body);
+  async (req, res) => {
+  const talkerAdded = await addTalker(req.body);
   res.status(201).json(talkerAdded);
+});
+
+app.put('/talker/:id',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+  (req, res) => {
+  const { id } = req.params;
+  res.status(201).json(id);
 });
