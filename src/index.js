@@ -68,8 +68,9 @@ app.put('/talker/:id',
   talkValidation,
   watchedAtValidation,
   rateValidation,
-  (req, res) => {
-  const { id } = req.params;
-  editTalker(id, req.body);
-  res.status(201).json(req.body);
+  async (req, res) => {
+  const { id } = req.params; // tudo que vem via params é string
+    const numberId = Number(id);
+  await editTalker(numberId, req.body);
+  res.status(200).json({ id: numberId, ...req.body });
 });
