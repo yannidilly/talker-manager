@@ -26,7 +26,17 @@ async function addTalker(talkerData) {
   }
 }
 
+async function editTalker(id, newTalkerData) {
+  const allTalkers = await readTalkers();
+  const talkerIndex = allTalkers.findIndex((talker) => talker.id === id);
+  console.log(talkerIndex);
+  allTalkers.splice(talkerIndex, 1, { id, ...newTalkerData });
+  const allTalkersFile = JSON.stringify(allTalkers);
+  await fs.writeFile(path.resolve(__dirname, '../talker.json'), allTalkersFile);
+}
+
 module.exports = {
   readTalkers,
   addTalker,
+  editTalker,
 };
