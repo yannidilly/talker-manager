@@ -79,5 +79,5 @@ app.delete('/talker/:id', tokenValidation, async (req, res) => {
   const { id } = req.params;
   const numberId = Number(id);
   await deleteTalker(numberId);
-  res.status(204);
+  res.status(204).json();
 });
