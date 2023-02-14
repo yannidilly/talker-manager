@@ -40,3 +40,8 @@ app.post('/login', emailValidation, passwordValidation, (request, response) => (
   response.status(200).json({
     token: crypto.randomBytes(8).toString('hex'),
 })));
+
+app.post('/talker', (request, response) => {
+  // const { name, age, talk: { watchedAt, rate } } = request.body;
+  response.status(201).json(request.body);
+});
