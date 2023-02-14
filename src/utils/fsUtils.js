@@ -11,6 +11,22 @@ async function readTalkers() {
   }
 }
 
+async function addTalker(talkerData) {
+  const talker = talkerData;
+  try {
+    const allTalkers = await readTalkers();
+    const lastTalkerId = allTalkers[allTalkers.length - 1].id;
+    talker.id = lastTalkerId + 1;
+    allTalkers.push(talker);
+    const allTalkersFile = JSON.stringify(allTalkers);
+    await fs.writeFile(path.resolve(__dirname, '../talker.json'), allTalkersFile);
+    return talker;
+  } catch (error) {
+    console.log('Erro na escrita do arquivo talker.json', error);
+  }
+}
+
 module.exports = {
   readTalkers,
+  addTalker,
 };
