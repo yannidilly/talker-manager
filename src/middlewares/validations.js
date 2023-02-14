@@ -70,7 +70,7 @@ const talkValidation = (req, res, next) => {
 
 const watchedAtValidation = (req, res, next) => {
   const { watchedAt } = req.body.talk;
-  const dataRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
+  const dataRegex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/;
   if (!watchedAt) {
     return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
   }
