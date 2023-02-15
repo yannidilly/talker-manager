@@ -52,13 +52,13 @@ app.get('/talker/:id', async (req, res) => {
 
 app.get('/talker', async (req, res) => {
   const talkersData = await readTalkers();
-  res.status(HTTP_OK_STATUS).json(talkersData);
+  return res.status(HTTP_OK_STATUS).json(talkersData);
 });
 
-app.post('/login', emailValidation, passwordValidation, (req, res) => (
-  res.status(200).json({
-    token: crypto.randomBytes(8).toString('hex'),
-})));
+app.post('/login', emailValidation, passwordValidation, (req, res) => {
+  const token = crypto.randomBytes(8).toString('hex');
+  return res.status(200).json({ token });
+});
 
 app.post('/talker',
   tokenValidation,
@@ -69,7 +69,7 @@ app.post('/talker',
   rateValidation,
   async (req, res) => {
   const talkerAdded = await addTalker(req.body);
-  res.status(201).json(talkerAdded);
+  return res.status(201).json(talkerAdded);
 });
 
 app.put('/talker/:id',
@@ -83,12 +83,12 @@ app.put('/talker/:id',
   const { id } = req.params;
   const numberId = Number(id);
   await editTalker(numberId, req.body);
-  res.status(200).json({ id: numberId, ...req.body });
+  return res.status(200).json({ id: numberId, ...req.body });
 });
 
 app.delete('/talker/:id', tokenValidation, async (req, res) => {
   const { id } = req.params;
   const numberId = Number(id);
   await deleteTalker(numberId);
-  res.status(204).json();
+  return res.status(204).json();
 });
