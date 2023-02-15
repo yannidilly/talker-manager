@@ -1,6 +1,12 @@
 const express = require('express');
 const crypto = require('crypto');
-const { readTalkers, addTalker, editTalker, deleteTalker } = require('./utils/fsUtils');
+const {
+  readTalkers,
+  addTalker,
+  editTalker,
+  deleteTalker,
+  searchTalker,
+} = require('./utils/fsUtils');
 const {
   emailValidation,
   passwordValidation,
@@ -25,6 +31,13 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker/search?q=searchTerm', tokenValidation, async (req, res) => {
+  const { searchTerm } = req.query;
+  console.log(searchTerm);
+  const searchedTalker = await searchTalker(searchTerm);
+  res.status(200).json(searchedTalker);
 });
 
 app.get('/talker/:id', async (req, res) => {
