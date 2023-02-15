@@ -33,21 +33,20 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.get('/talker/search?q=searchTerm', tokenValidation, async (req, res) => {
-  const { searchTerm } = req.query;
-  console.log(searchTerm);
-  const searchedTalker = await searchTalker(searchTerm);
-  res.status(200).json(searchedTalker);
+app.get('/talker/search', tokenValidation, async (req, res) => { // a variavel passada por url deve ser tratada, não esperada na definição do endpoint
+  const { q } = req.query;
+  console.log('search: ', q);
+  const searchedTalker = await searchTalker(q);
+  return res.status(200).json(searchedTalker);
 });
 
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
+  console.log('query: ', req.query);
   const talkersData = await readTalkers();
   const talkerRequestData = talkersData.find((talkerData) => talkerData.id === Number(id));
   if (!talkerRequestData) {
-    return res.status(404).json({
-      message: 'Pessoa palestrante não encontrada',
-    });
+    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
   return res.status(HTTP_OK_STATUS).json(talkerRequestData);
 });
