@@ -42,9 +42,16 @@ async function deleteTalker(id) {
   await fs.writeFile(path.resolve(__dirname, '../talker.json'), allTalkersFile);
 }
 
+async function searchTalker(searchTerm) {
+  const allTalkers = await readTalkers();
+  const talkersSearched = allTalkers.filter((talker) => talker.name.includes(searchTerm));
+  return talkersSearched;
+}
+
 module.exports = {
   readTalkers,
   addTalker,
   editTalker,
   deleteTalker,
+  searchTalker,
 };
