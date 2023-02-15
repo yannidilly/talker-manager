@@ -33,9 +33,8 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.get('/talker/search', tokenValidation, async (req, res) => { // a variavel passada por url deve ser tratada, não esperada na definição do endpoint
+app.get('/talker/search', tokenValidation, async (req, res) => {
   const { q } = req.query;
-  console.log('search: ', q);
   const searchedTalker = await searchTalker(q);
   return res.status(200).json(searchedTalker);
 });
